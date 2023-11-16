@@ -1,7 +1,6 @@
 package com.daeseong.roulette;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
-
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     float endDegree = 0f;
     float divDegree = 0f;
     float repeatDegree = 360f;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

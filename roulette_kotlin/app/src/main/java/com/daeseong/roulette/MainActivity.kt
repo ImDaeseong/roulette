@@ -15,20 +15,20 @@ class MainActivity : AppCompatActivity() {
 
     private val tag = MainActivity::class.java.simpleName
 
-    private var imageview1: ImageView? = null
+    private lateinit var imageview1: ImageView
 
-    var nRouletteCount = 6
-    var startDegree = 0f
-    var endDegree = 0f
-    var divDegree = 0f
-    var repeatDegree = 360f
+    private var nRouletteCount = 6
+    private var startDegree = 0f
+    private var endDegree = 0f
+    private var divDegree = 0f
+    private var repeatDegree = 360f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        imageview1 = findViewById<View>(R.id.imageview1) as ImageView
-        imageview1!!.setOnClickListener {
+        imageview1 = findViewById(R.id.imageview1)
+        imageview1.setOnClickListener {
 
             startDegree = divDegree
             val rand = Random()
@@ -42,41 +42,31 @@ class MainActivity : AppCompatActivity() {
             //Log.e(tag, "divDegree:$divDegree")
 
             val nResult = getResult(divDegree)
-            when (nResult) {
-                1 -> {
-                    repeatDegree = 360f
-                }
-                2 -> {
-                    repeatDegree = 300f
-                }
-                3 -> {
-                    repeatDegree = 240f
-                }
-                4 -> {
-                    repeatDegree = 180f
-                }
-                5 -> {
-                    repeatDegree = 120f
-                }
-                6 -> {
-                    repeatDegree = 60f
-                }
+            repeatDegree = when (nResult) {
+                1 -> 360f
+                2 -> 300f
+                3 -> 240f
+                4 -> 180f
+                5 -> 120f
+                6 -> 60f
+                else -> repeatDegree
             }
             //Log.e(tag, "nResult:$nResult")
 
-            val object1 = ObjectAnimator.ofFloat(imageview1!!, "rotation", startDegree, endDegree)
+            val object1 = ObjectAnimator.ofFloat(imageview1, "rotation", startDegree, endDegree)
             object1.interpolator = LinearInterpolator()//일정하게
             object1.duration = 1000
             object1.start()
 
-            val object2 = ObjectAnimator.ofFloat(imageview1!!, "rotation", 0f, repeatDegree)
+            val object2 = ObjectAnimator.ofFloat(imageview1, "rotation", 0f, repeatDegree)
             object2.interpolator = LinearInterpolator()//일정하게
             object2.duration = 1000
             object2.start()
 
+
             /*
-            val object1 = ObjectAnimator.ofFloat(imageview1!!, "rotation", startDegree, endDegree)
-            val object2 = ObjectAnimator.ofFloat(imageview1!!, "rotation", 0f, repeatDegree)
+            val object1 = ObjectAnimator.ofFloat(imageview1, "rotation", startDegree, endDegree)
+            val object2 = ObjectAnimator.ofFloat(imageview1, "rotation", 0f, repeatDegree)
             val animSet = AnimatorSet()
             animSet.playTogether(object1, object2)
             animSet.duration = 1000
@@ -84,7 +74,6 @@ class MainActivity : AppCompatActivity() {
             animSet.start()
             */
         }
-
     }
 
     private fun getResult(angle: Float): Int {
@@ -97,21 +86,15 @@ class MainActivity : AppCompatActivity() {
         //테스트 이미지는 30도씩 왼쪽으로 틀어져있음 그래서 30도씩 왼쪽으로 30도 이동
         //1:330 ~ 30, 2:30 ~ 90, 3:90 ~ 150, 4:150 ~ 210, 5:210 ~ 270, 6:270 ~ 330
 
-        var nResult = 0
-        if (angle > 330 || angle <= 30) {
-            nResult = 1
-        } else if (angle > 30 && angle <= 90) {
-            nResult = 2
-        } else if (angle > 90 && angle <= 150) {
-            nResult = 3
-        } else if (angle > 150 && angle <= 210) {
-            nResult = 4
-        } else if (angle > 210 && angle <= 270) {
-            nResult = 5
-        } else if (angle > 270 && angle <= 330) {
-            nResult = 6
+        return when {
+            angle > 330 || angle <= 30 -> 1
+            angle > 30 && angle <= 90 -> 2
+            angle > 90 && angle <= 150 -> 3
+            angle > 150 && angle <= 210 -> 4
+            angle > 210 && angle <= 270 -> 5
+            angle > 270 && angle <= 330 -> 6
+            else -> 0
         }
-        return nResult
     }
 
 }
